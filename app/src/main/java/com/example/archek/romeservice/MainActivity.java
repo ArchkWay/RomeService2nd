@@ -3,16 +3,30 @@ package com.example.archek.romeservice;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Button;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    Button btnStart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*Инициируем активити и кнопку/instantiate activity and button */
         setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this, MyService.class);
-        startService(intent);
+        btnStart = findViewById(R.id.btnStart);
+        /*запускаем сервис/start service*/
+        onClickStart();
+
     }
+    public void onClickStart() {
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startService(new Intent(getApplicationContext(), MyService.class));
+
+            }
+        });
+    }
+
 }

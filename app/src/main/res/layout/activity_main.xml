@@ -4,14 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/black"
     >
-
-    <TextView
-        android:id="@+id/tv"
+    <Button
+        android:id="@+id/btnStart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello"
+        android:textSize="90sp"
+        android:background="@drawable/rounded_btn"
         android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+        android:text="@string/start" />
+
+
 
 </LinearLayout>

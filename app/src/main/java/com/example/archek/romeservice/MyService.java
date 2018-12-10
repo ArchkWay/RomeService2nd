@@ -10,28 +10,33 @@ import android.support.v4.app.NotificationManagerCompat;
 import java.util.concurrent.TimeUnit;
 
 
-import static com.example.archek.romeservice.App.CHANNEL_1_ID;
+import static com.example.archek.romeservice.App.CHANNEL;
 
 public class MyService extends Service {
 
     private NotificationManagerCompat notificationManager;
     int x;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        notificationManager = NotificationManagerCompat.from(this);
-        for(x = 0; x <= 100; x = x + 5){
-            sendOnChannel1(x);
-            try {
-                TimeUnit.SECONDS.sleep(3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        /*Запускаем фоновый процесс/ Start background process*/
+        new Thread(new Runnable() {
+            public void run() {
+                notificationManager = NotificationManagerCompat.from(getApplicationContext());
+                /* бесконечный цикл оповещений / perpetual cycle with notifications every 3 seconds*/
+                for (x = 0; x <= 100; x = x + 5){
+                    sendOnChannel1(x);
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if (x == 100) {//restart cycle
+                        x = 0;
+                    }
+                }
             }
-            if(x == 100){
-                x = 0;
-            }
-        }
+        }).start();
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -41,11 +46,10 @@ public class MyService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
 
     }
-
-    public void sendOnChannel1(int x){
+/*метод отправки уведомлений / approach for sending notifications*/
+    private void sendOnChannel1(int x){
         String message = convert(x);
-
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL)
                 .setSmallIcon(R.drawable.ic_one)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -54,6 +58,8 @@ public class MyService extends Service {
         notificationManager.notify(1, notification);
     }
 
+/*метод для конвертации чисел в римские /
+approach for convertation regular numbers in roman */
     public static String convert(int input) {
         if (input < 1 )
             return "0";
