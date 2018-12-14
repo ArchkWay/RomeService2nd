@@ -10,21 +10,19 @@ import android.support.v4.app.NotificationManagerCompat;
 import java.util.concurrent.TimeUnit;
 
 
-import static com.example.archek.romeservice.App.CHANNEL;
 
 public class MyService extends Service {
 
-    private NotificationManagerCompat notificationManager;
+
     int x;
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         /*Запускаем фоновый процесс/ Start background process*/
         new Thread(new Runnable() {
             public void run() {
-                notificationManager = NotificationManagerCompat.from(getApplicationContext());
-                /* бесконечный цикл оповещений / perpetual cycle with notifications every 3 seconds*/
+                /* бесконечный цикл  / perpetual cycle */
                 for (x = 0; x <= 100; x = x + 5){
-                    sendOnChannel1(x);
+                    MainActivity.changeName(convert(x));
                     try {
                         TimeUnit.SECONDS.sleep(3);
                     } catch (InterruptedException e) {
@@ -46,17 +44,7 @@ public class MyService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
 
     }
-/*метод отправки уведомлений / approach for sending notifications*/
-    private void sendOnChannel1(int x){
-        String message = convert(x);
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL)
-                .setSmallIcon(R.drawable.ic_one)
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .build();
-        notificationManager.notify(1, notification);
-    }
+
 
 /*метод для конвертации чисел в римские /
 approach for convertation regular numbers in roman */

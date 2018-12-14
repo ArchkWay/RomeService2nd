@@ -8,7 +8,7 @@ import android.widget.Button;
 
 
 public class MainActivity extends AppCompatActivity {
-    Button btnStart;
+    private static Button btnStart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public static void changeName(String num){
+        btnStart.setText(num);
     }
 
 }
